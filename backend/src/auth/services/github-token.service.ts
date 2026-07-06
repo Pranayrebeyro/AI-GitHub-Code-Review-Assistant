@@ -5,6 +5,8 @@ interface GitHubTokenResponse {
   access_token: string;
   token_type: string;
   scope: string;
+  error?: string;
+  error_description?: string;
 }
 
 export async function getGitHubAccessToken(code: string) {
@@ -21,6 +23,10 @@ export async function getGitHubAccessToken(code: string) {
       },
     }
   );
+
+  console.log("========== GITHUB TOKEN ==========");
+  console.log(response.data);
+  console.log("==================================");
 
   return response.data.access_token;
 }

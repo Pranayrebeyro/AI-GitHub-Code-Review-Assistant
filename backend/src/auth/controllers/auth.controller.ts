@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { getGitHubOAuthURL } from "../services/github-oauth.service.js";
 import { getGitHubAccessToken } from "../services/github-token.service.js";
+import { getGitHubUser } from "../services/github-user.service.js";
+import { upsertUser } from "../services/user.service.js";
+import { generateToken } from "../utils/jwt.js";
+import { env } from "../../config/env.js";
 
 export function githubLogin(_req: Request, res: Response) {
   return res.redirect(getGitHubOAuthURL());
@@ -17,14 +21,41 @@ export async function githubCallback(req: Request, res: Response) {
       });
     }
 
-    const token = await getGitHubAccessToken(code);
+    // Exchange authorization code for GitHub access token
+    const accessToken = await getGitHubAccessToken(code);
 
-    return res.json({
-      success: true,
-      accessToken: token,
+    // Fetch GitHub user profile
+    const githubUser = await getGitHubUser(accessToken);
+
+    // Save or update user in PostgreSQL
+    const user = await upsertUser(githubUser, accessToken);
+
+    // Generate JWT
+    const token = generateToken({
+      userId: user.id,
+      email: user.email,
     });
-  } catch (error) {
+
+    // Store JWT in HttpOnly cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // Change to true in production (HTTPS)
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    // Redirect to frontend dashboard
+    return res.redirect(`${env.FRONTEND_URL}/dashboard`);
+  } catch (error: any) {
+    console.error("========== GITHUB AUTH ERROR ==========");
     console.error(error);
+
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Data:", error.response.data);
+    }
+
+    console.error("=======================================");
 
     return res.status(500).json({
       success: false,

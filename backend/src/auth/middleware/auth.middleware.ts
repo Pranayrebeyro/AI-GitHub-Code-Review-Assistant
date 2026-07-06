@@ -1,11 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "../utils/jwt.js";
+import { verifyToken, type JwtPayload } from "../utils/jwt.js";
 
 export interface AuthRequest extends Request {
-  user?: {
-    userId: string;
-    email: string;
-  };
+  user?: JwtPayload;
 }
 
 export function authenticate(
@@ -13,16 +10,14 @@ export function authenticate(
   res: Response,
   next: NextFunction
 ) {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies.token;
 
-  if (!authHeader?.startsWith("Bearer ")) {
+  if (!token) {
     return res.status(401).json({
       success: false,
       message: "Unauthorized",
     });
   }
-
-  const token = authHeader.split(" ")[1];
 
   try {
     req.user = verifyToken(token);

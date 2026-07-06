@@ -15,6 +15,8 @@ const envSchema = z.object({
   FRONTEND_URL: z.string(),
 
   BACKEND_URL: z.string(),
+
+  GEMINI_API_KEY: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
