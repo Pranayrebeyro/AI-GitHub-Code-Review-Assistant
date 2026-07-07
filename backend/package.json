@@ -6,7 +6,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
@@ -17,9 +17,13 @@
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@langchain/community": "^1.1.29",
+    "@langchain/google-genai": "^2.2.0",
+    "@langchain/textsplitters": "^1.0.1",
     "@prisma/client": "^6.16.2",
     "axios": "^1.18.1",
     "bcryptjs": "^3.0.3",
+    "chromadb": "^3.5.0",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -29,6 +33,7 @@
     "express-session": "^1.19.0",
     "helmet": "^8.2.0",
     "jsonwebtoken": "^9.0.3",
+    "langchain": "^1.5.2",
     "morgan": "^1.11.0",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",
@@ -48,6 +53,7 @@
     "@types/node": "^26.1.0",
     "@types/passport": "^1.0.17",
     "@types/passport-github2": "^1.2.9",
+    "depcheck": "^1.4.7",
     "nodemon": "^3.1.14",
     "tsx": "^4.23.0",
     "typescript": "^6.0.3"

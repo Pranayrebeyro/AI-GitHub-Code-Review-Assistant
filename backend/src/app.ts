@@ -10,6 +10,9 @@ import healthRoutes from "./routes/health.routes.js";
 import githubRoutes from "./github/routes/github.routes.js";
 import reviewRoutes from "./ai/routes/review.routes.js";
 import repositoryReviewRoutes from "./ai/routes/repository-review.routes.js";
+import chatRoutes from "./chat/routes/chat.routes.js";
+import dashboardReviewRoutes from "./ai/routes/dashboard-review.routes.js";
+import { apiLimiter } from "./middlewares/rate-limit.middleware.js";
 
 const app = express();
 
@@ -22,6 +25,7 @@ app.use(
 );
 app.use(compression());
 app.use(express.json());
+app.use(apiLimiter);
 app.use(cookieParser());
 app.use(morgan("dev"));
 
@@ -30,6 +34,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/github", githubRoutes);
 app.use("/api/ai", reviewRoutes);
 app.use("/api/ai",repositoryReviewRoutes);
+app.use("/api", chatRoutes);
+app.use("/api/ai",dashboardReviewRoutes);
 
 app.get("/", (_req, res) => {
   res.json({

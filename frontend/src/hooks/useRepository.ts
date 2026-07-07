@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRepository } from "../services/githubRepository";
+import { getRepository } from "../services/repository";
 
 export function useRepository(
   owner: string,
