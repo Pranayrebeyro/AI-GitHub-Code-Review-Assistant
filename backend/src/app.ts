@@ -13,13 +13,14 @@ import repositoryReviewRoutes from "./ai/routes/repository-review.routes.js";
 import chatRoutes from "./chat/routes/chat.routes.js";
 import dashboardReviewRoutes from "./ai/routes/dashboard-review.routes.js";
 import { apiLimiter } from "./middlewares/rate-limit.middleware.js";
+import { env } from "./config/env.js";
 
 const app = express();
 
 app.use(helmet());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: env.FRONTEND_URL,
     credentials: true,
   })
 );
