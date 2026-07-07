@@ -10,7 +10,16 @@ export function authenticate(
   res: Response,
   next: NextFunction
 ) {
-  const token = req.cookies.token;
+  const cookieToken = req.cookies.token;
+
+  const authHeader = req.headers.authorization;
+
+  const bearerToken =
+    authHeader?.startsWith("Bearer ")
+      ? authHeader.substring(7)
+      : undefined;
+
+  const token = cookieToken || bearerToken;
 
   if (!token) {
     return res.status(401).json({

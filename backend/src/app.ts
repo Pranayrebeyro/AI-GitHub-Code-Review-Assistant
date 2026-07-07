@@ -9,6 +9,7 @@ import authRoutes from "./auth/routes/auth.routes.js";
 import healthRoutes from "./routes/health.routes.js";
 import githubRoutes from "./github/routes/github.routes.js";
 import reviewRoutes from "./ai/routes/review.routes.js";
+import repositoryReviewRoutes from "./ai/routes/repository-review.routes.js";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/github", githubRoutes);
 app.use("/api/ai", reviewRoutes);
+app.use("/api/ai",repositoryReviewRoutes);
 
 app.get("/", (_req, res) => {
   res.json({
