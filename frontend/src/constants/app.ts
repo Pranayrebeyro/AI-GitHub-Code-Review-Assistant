@@ -5,5 +5,5 @@ export const APP = {
     "AI Powered GitHub Code Review Platform",
 
   githubAuth:
-    "http://localhost:5000/api/auth/github",
+    `${import.meta.env.VITE_API_URL}/auth/github`,
 };

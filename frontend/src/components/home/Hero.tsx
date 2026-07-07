@@ -3,10 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 
 import RepositoryPreview from "./RepositoryPreview";
+import { APP } from "../../constants/app";
 
 const Hero = () => {
   const handleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/github";
+    window.location.href = APP.githubAuth;
   };
 
   return (
@@ -59,9 +60,7 @@ const Hero = () => {
               className="flex items-center gap-3 rounded-xl bg-white px-10 py-5 text-lg font-semibold text-slate-900 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-indigo-500/30"
             >
               <FaGithub />
-
               Continue with GitHub
-
               <ArrowRight size={20} />
             </button>
 
