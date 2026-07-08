@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "description": "",
+  "engines": {
+    "node": "22.x"
+  },
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
